@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>spot the ball game</title>
+    <link rel="stylesheet" href="style.css">   
+    <style>
+        body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.icon-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.icon {
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    padding: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.icon:hover {
+    background-color: #e0e0e0;
+}
+
+.icon i {
+    font-size: 24px;
+}
+
+#drawing-canvas {
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    background-color: #fff;
+}
+
+    </style>
+    
+<script>document.addEventListener('DOMContentLoaded', () => {
+    const penIcon = document.getElementById('pen-icon');
+    const undoIcon = document.getElementById('undo-icon');
+    const infoIcon = document.getElementById('info-icon');
+    const magnifyIcon = document.getElementById('magnify-icon');
+    const canvas = document.getElementById('drawing-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    let drawing = false;
+    let undoStack = [];
+    let magnifyMode = false;
+    
+    // Activate drawing mode
+    penIcon.addEventListener('click', () => {
+        if (magnifyMode) {
+            magnifyMode = false;
+            canvas.style.cursor = 'default';
+        }
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        console.log('Drawing mode activated');
+    });
+
+    // Perform undo operation
+    undoIcon.addEventListener('click', () => {
+        if (undoStack.length > 0) {
+            let lastImageData = undoStack.pop();
+            ctx.putImageData(lastImageData, 0, 0);
+        } else {
+            console.log('Nothing to undo');
+        }
+    });
+
+    // Display information
+    infoIcon.addEventListener('click', () => {
+        alert('Sports Ball Competition: Use the pen icon to draw directions where the ball might be. Use the undo icon to undo the last action. Use the magnifying glass icon to place your guesses more precisely.');
+    });
+
+    // Activate magnifying mode
+    magnifyIcon.addEventListener('click', () => {
+        magnifyMode = true;
+        canvas.style.cursor = 'crosshair';
+        canvas.removeEventListener('mousedown', startDrawing);
+        canvas.removeEventListener('mousemove', draw);
+        canvas.removeEventListener('mouseup', stopDrawing);
+        canvas.removeEventListener('mouseout', stopDrawing);
+        console.log('Magnifying mode activated');
+    });
+
+    // Helper functions
+    function startDrawing(event) {
+        drawing = true;
+        ctx.beginPath();
+        ctx.moveTo(event.offsetX, event.offsetY);
+        saveState();
+    }
+
+    function draw(event) {
+        if (!drawing) return;
+        ctx.lineTo(event.offsetX, event.offsetY);
+        ctx.stroke();
+    }
+
+    function stopDrawing() {
+        if (drawing) {
+            ctx.closePath();
+            drawing = false;
+        }
+    }
+
+    function saveState() {
+        undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+        if (undoStack.length > 10) {
+            undoStack.shift();
+        }
+    }
+});
+</script>
+    
+</head>
+<body>
+    
+    
+    
+    <div class="tool-icons-container">
+<img src="spot1.jpg" alt="football field" class="football-field">
+<div class="spot" id="spot"></div>
+<div class="icon-container">
+
+    <div class="icon-container">
+        <div class="icon" id="pen-icon" title="Pen"><i class="fas fa-pen"></i></div>
+        <div class="icon" id="undo-icon" title="Undo"><i class="fas fa-undo"></i></div>
+        <div class="icon" id="info-icon" title="Info"><i class="fas fa-info-circle"></i></div>
+        <div class="icon" id="magnify-icon" title="Magnify"><i class="fas fa-search"></i></div>
+    </div>
+    <canvas id="drawing-canvas" width="800" height="600"></canvas>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+        
+            
+        </body>
+    </html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>spot the ball game</title>
+    <link rel="stylesheet" href="style.css">   
+    <style>
+        img{
+            width: 600px;
+        }
+        .tool-icons-container {
+    position: relative;
+    left: 25%;
+    background-color: #CACACF;
+    width: 75%;
+    padding-left: 50px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 100%;
+    background-color: #f8f8f8;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    margin: 10px 0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.icon:hover {
+    transform: scale(1.1);
+}
+
+.orange {
+    background-color: orange;
+}
+
+.gray {
+    background-color: gray;
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.content {
+    margin-left: 60px; /* Space for the sidebar */
+    padding: 20px;
+}
+    </style>
+    
+</head>
+<body class="spot-ball">
+    <div class="sidebar">
+        <div class="icon orange"></div>
+        <div class="icon gray"></div>
+        <div class="icon red"></div>
+        <div class="icon green"></div>
+        <div class="icon blue"></div>
+    </div>
+    <span class="spot_the_ball_draw_lines tool_icon tooltip tooltipstered active"></span>
+    <span class="spot_the_ball_undo_lines tool_icon tooltip tooltipstered disabled"></span>
+    <span class="spot_the_ball_toggle_visibility_lines tool_icon tooltip tooltipstered disabled"></span>
+    <span class="spot_the_ball_draw_lines_info tool_icon tooltip tooltipstered"></span>
+
+    <div class="tool-icons-container">
+<img src="spot1.jpg" alt="football field" class="football-field">
+<div class="spot" id="spot"></div>
+
+
+
+    </div>
+    
+    <script>// script.js
+        document.addEventListener('DOMContentLoaded', () => {
+            const icons = document.querySelectorAll('.icon');
+        
+            icons.forEach(icon => {
+                icon.addEventListener('click', () => {
+                    icons.forEach(i => i.classList.remove('active'));
+                    icon.classList.add('active');
+                });
+            });
+        });
+        </script>
+</body>
+</html>
